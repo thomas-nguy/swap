@@ -160,6 +160,14 @@ func (am AppModule) BeginBlock(_ sdk.Context, _ abci.RequestBeginBlock) {}
 
 // EndBlock executes all ABCI EndBlock logic respective to the capability module. It
 // returns no validator updates.
-func (am AppModule) EndBlock(_ sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
+func (am AppModule) EndBlock(ctx sdk.Context, _ abci.RequestEndBlock) []abci.ValidatorUpdate {
+	abciEvents := ctx.EventManager().Events()
+
+	for _, event := range abciEvents {
+		if event.Type == "test" {
+			coins := sdk.Coins{sdk.NewCoin("CRO", sdk.NewInt(1))}
+			am.keeper.Bank().MintCoins(ctx, am.Name(), coins)
+		}
+	}
 	return []abci.ValidatorUpdate{}
 }

@@ -16,8 +16,9 @@ type (
 		cdc      codec.Marshaler
 		storeKey sdk.StoreKey
 		memKey   sdk.StoreKey
-		// this line is used by starport scaffolding # ibc/keeper/attribute
+		bankKeeper types.BankKeeper
 
+		// this line is used by starport scaffolding # ibc/keeper/attribute
 	}
 )
 
@@ -25,6 +26,7 @@ func NewKeeper(
 	cdc codec.Marshaler,
 	storeKey,
 	memKey sdk.StoreKey,
+	bankKeeper types.BankKeeper,
 	// this line is used by starport scaffolding # ibc/keeper/parameter
 
 ) *Keeper {
@@ -32,6 +34,7 @@ func NewKeeper(
 		cdc:      cdc,
 		storeKey: storeKey,
 		memKey:   memKey,
+		bankKeeper: bankKeeper,
 		// this line is used by starport scaffolding # ibc/keeper/return
 
 	}
@@ -39,4 +42,8 @@ func NewKeeper(
 
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
+}
+
+func (k Keeper) Bank() types.BankKeeper {
+	return k.bankKeeper
 }

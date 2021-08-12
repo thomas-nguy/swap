@@ -342,6 +342,7 @@ func New(
 		appCodec,
 		keys[swapmoduletypes.StoreKey],
 		keys[swapmoduletypes.MemStoreKey],
+		app.BankKeeper,
 	)
 	swapModule := swapmodule.NewAppModule(appCodec, app.SwapKeeper)
 
@@ -395,7 +396,7 @@ func New(
 		evidencetypes.ModuleName, stakingtypes.ModuleName, ibchost.ModuleName,
 	)
 
-	app.mm.SetOrderEndBlockers(crisistypes.ModuleName, govtypes.ModuleName, stakingtypes.ModuleName)
+	app.mm.SetOrderEndBlockers(crisistypes.ModuleName, govtypes.ModuleName, stakingtypes.ModuleName, swapmoduletypes.ModuleName)
 
 	// NOTE: The genutils module must occur after staking so that pools are
 	// properly initialized with tokens from genesis accounts.
